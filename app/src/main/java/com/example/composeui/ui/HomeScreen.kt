@@ -11,6 +11,7 @@ import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.layout.size
 import androidx.compose.foundation.lazy.LazyRow
+import androidx.compose.foundation.shape.CircleShape
 import androidx.compose.foundation.shape.RoundedCornerShape
 import androidx.compose.material3.Icon
 import androidx.compose.material3.MaterialTheme
@@ -30,6 +31,7 @@ import com.example.composeui.R
 import com.example.composeui.ui.theme.ButtonBlue
 import com.example.composeui.ui.theme.DarkerButtonBlue
 import com.example.composeui.ui.theme.DeepBlue
+import com.example.composeui.ui.theme.LightRed
 import com.example.composeui.ui.theme.TextWhite
 
 @Composable
@@ -42,6 +44,7 @@ fun HomeScreen() {
         Column {
             GreetingSection()
             ChipSection(chips = listOf("Sweet Sleep", "Insomnia", "Depression"))
+            CurrentMeditation()
 
         }
 
@@ -62,8 +65,16 @@ fun GreetingSection(
         Column(
             verticalArrangement = Arrangement.Center
         ) {
-            Text(text = "Good morning, $${name}", style = MaterialTheme.typography.headlineSmall)
-            Text(text = "We wish you have a good day", style = MaterialTheme.typography.bodyMedium)
+            Text(
+                text = "Good morning, $name",
+                style = MaterialTheme.typography.headlineSmall,
+                color = TextWhite
+            )
+            Text(
+                text = "We wish you have a good day",
+                style = MaterialTheme.typography.bodyMedium,
+                color = TextWhite
+            )
         }
         Icon(
             painter = painterResource(id = R.drawable.ic_search),
@@ -83,26 +94,65 @@ fun ChipSection(
     }
     LazyRow {
         items(chips.size) {
-            Box(
-                modifier = Modifier
-                    .padding(
-                        start = 16.dp,
-                        top = 16.dp,
-                        bottom = 16.dp,
-                        end = 0.dp
-                    )
-                    .clickable {
-                        selectedChipIndex = it
-                    }
-                    .clip(RoundedCornerShape(16.dp))
-                    .background(
-                        if (selectedChipIndex == it) ButtonBlue
-                        else DarkerButtonBlue
-                    )
-                    .padding(16.dp)
-            ) {
+            Box(modifier = Modifier
+                .padding(
+                    start = 16.dp, top = 16.dp, bottom = 16.dp, end = 0.dp
+                )
+                .clickable {
+                    selectedChipIndex = it
+                }
+                .clip(RoundedCornerShape(16.dp))
+                .background(
+                    if (selectedChipIndex == it) ButtonBlue
+                    else DarkerButtonBlue
+                )
+                .padding(16.dp)) {
                 Text(text = chips[it], color = TextWhite)
             }
         }
     }
+}
+
+@Composable
+fun CurrentMeditation(color: Color = LightRed) {
+    Row(
+        verticalAlignment = Alignment.CenterVertically,
+        horizontalArrangement = Arrangement.SpaceBetween,
+        modifier = Modifier
+            .padding(16.dp)
+            .clip(RoundedCornerShape(16.dp))
+            .background(color)
+            .padding(horizontal = 16.dp, vertical = 20.dp)
+            .fillMaxWidth()
+    ) {
+        Column(
+            verticalArrangement = Arrangement.Center
+        ) {
+            Text(
+                text = "Daily Thought",
+                style = MaterialTheme.typography.headlineSmall,
+                color = TextWhite
+            )
+            Text(
+                text = "Meditation * 3-10 min ",
+                style = MaterialTheme.typography.bodySmall,
+                color = TextWhite
+            )
+        }
+        Box(
+            modifier = Modifier
+                .size(40.dp)
+                .clip(CircleShape)
+                .background(ButtonBlue)
+                .padding(12.dp)
+        ) {
+            Icon(
+                painter = painterResource(id = R.drawable.ic_play),
+                contentDescription = "Search",
+                tint = Color.White,
+                modifier = Modifier.size(16.dp)
+            )
+        }
+    }
+
 }

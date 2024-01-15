@@ -1,4 +1,4 @@
-package com.example.composeui.ui
+package com.example.composeui.data
 
 import androidx.annotation.DrawableRes
 import androidx.compose.ui.graphics.Color

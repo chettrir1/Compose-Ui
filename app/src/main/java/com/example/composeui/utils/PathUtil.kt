@@ -1,4 +1,4 @@
-package com.example.composeui.ui
+package com.example.composeui.utils
 
 import androidx.compose.ui.geometry.Offset
 import androidx.compose.ui.graphics.Path

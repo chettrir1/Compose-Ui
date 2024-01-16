@@ -46,7 +46,7 @@ class TimerActivity : ComponentActivity() {
             ) {
                 Box(contentAlignment = Alignment.Center) {
                     Timer(
-                        totalTime = 100L * 1000L,
+                        totalTime = 10L * 1000L,
                         handleColor = Color.Green,
                         inactiveBarColor = Color.DarkGray,
                         activeBarColor = Color(0xFF37B900),
@@ -86,6 +86,8 @@ fun Timer(
             delay(100L)
             currentTime -= 100L
             value = currentTime / totalTime.toFloat()
+        } else {
+            isTimerRunning = false
         }
     }
 
@@ -152,13 +154,9 @@ fun Timer(
         ) {
             Text(
                 color = Color.Black,
-                text = if (isTimerRunning && currentTime >= 0L) {
-                    "Stop"
-                } else if (!isTimerRunning && currentTime >= 0L) {
-                    "Start"
-                } else {
-                    "Restart"
-                }
+                text = if (isTimerRunning && currentTime >= 0L) "Stop"
+                else if (!isTimerRunning && currentTime >= 0L) "Start"
+                else "Restart"
             )
         }
     }

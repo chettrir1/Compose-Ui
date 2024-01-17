@@ -4,6 +4,7 @@ import android.os.Bundle
 import androidx.activity.ComponentActivity
 import androidx.activity.compose.setContent
 import com.example.composeui.ui.HomeScreen
+import com.example.composeui.ui.ProfileScreen
 import com.example.composeui.ui.theme.MeditationUIYouTubeTheme
 
 class MainActivity : ComponentActivity() {
@@ -11,7 +12,7 @@ class MainActivity : ComponentActivity() {
         super.onCreate(savedInstanceState)
         setContent {
             MeditationUIYouTubeTheme {
-                HomeScreen()
+                ProfileScreen()
             }
         }
     }

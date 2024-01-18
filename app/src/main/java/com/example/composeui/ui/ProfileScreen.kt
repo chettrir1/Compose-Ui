@@ -18,11 +18,17 @@ import androidx.compose.foundation.lazy.LazyRow
 import androidx.compose.foundation.shape.CircleShape
 import androidx.compose.foundation.shape.RoundedCornerShape
 import androidx.compose.material.Icon
+import androidx.compose.material.Tab
+import androidx.compose.material.TabRow
 import androidx.compose.material.Text
 import androidx.compose.material.icons.Icons
 import androidx.compose.material.icons.automirrored.filled.ArrowBack
 import androidx.compose.material.icons.filled.KeyboardArrowDown
 import androidx.compose.runtime.Composable
+import androidx.compose.runtime.getValue
+import androidx.compose.runtime.mutableStateOf
+import androidx.compose.runtime.remember
+import androidx.compose.runtime.setValue
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.draw.clip
@@ -39,7 +45,7 @@ import androidx.compose.ui.text.style.TextOverflow
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
 import com.example.composeui.R
-import com.example.composeui.data.StoryHighlight
+import com.example.composeui.data.ImageWithText
 
 @Composable
 fun ProfileScreen() {
@@ -51,13 +57,13 @@ fun ProfileScreen() {
         Spacer(modifier = Modifier.height(20.dp))
         HighlightSection(
             highlights = listOf(
-                StoryHighlight(image = painterResource(id = R.drawable.youtube), text = "Youtube"),
-                StoryHighlight(image = painterResource(id = R.drawable.qa), text = "Q&A"),
-                StoryHighlight(image = painterResource(id = R.drawable.discord), text = "Discord"),
-                StoryHighlight(image = painterResource(id = R.drawable.telegram), text = "Telegram")
-            ),
-            modifier = Modifier
+                ImageWithText(image = painterResource(id = R.drawable.youtube), text = "Youtube"),
+                ImageWithText(image = painterResource(id = R.drawable.qa), text = "Q&A"),
+                ImageWithText(image = painterResource(id = R.drawable.discord), text = "Discord"),
+                ImageWithText(image = painterResource(id = R.drawable.telegram), text = "Telegram")
+            ), modifier = Modifier
                 .fillMaxWidth()
+                .padding(horizontal = 8.dp)
         )
     }
 }
@@ -311,14 +317,14 @@ fun ActionButton(
 
 @Composable
 fun HighlightSection(
-    highlights: List<StoryHighlight>, modifier: Modifier = Modifier
+    highlights: List<ImageWithText>, modifier: Modifier = Modifier
 ) {
     LazyRow(modifier = modifier) {
         items(highlights.size) {
             Column(
                 horizontalAlignment = Alignment.CenterHorizontally,
                 verticalArrangement = Arrangement.Center,
-                modifier = Modifier.padding(15.dp)
+                modifier = Modifier.padding(horizontal = 8.dp)
             ) {
                 RoundImage(
                     image = highlights[it].image, modifier = Modifier.size(70.dp)
@@ -331,4 +337,46 @@ fun HighlightSection(
             }
         }
     }
+}
+
+@Composable
+fun PostTabView(
+    imageWithText: List<ImageWithText>,
+    modifier: Modifier = Modifier,
+    onTabSelected: (selectedIndex: Int) -> Unit
+) {
+
+    var selectedTabIndex by remember {
+        mutableStateOf(0)
+    }
+
+    val inactiveColor = Color(0xFF777777)
+
+    TabRow(
+        selectedTabIndex = selectedTabIndex,
+        backgroundColor = Color.Transparent,
+        contentColor = Color.Black,
+        modifier = modifier
+    ) {
+        imageWithText.forEachIndexed { index, item ->
+            Tab(selected = selectedTabIndex == index,
+                selectedContentColor = Color.Black,
+                unselectedContentColor = inactiveColor,
+                onClick = {
+                    selectedTabIndex = index
+                    onTabSelected(index)
+                }) {
+                Icon(
+                    painter = item.image,
+                    contentDescription = item.text,
+                    tint = if (selectedTabIndex == index) Color.Black else inactiveColor,
+                    modifier = Modifier
+                        .padding(10.dp)
+                        .size(20.dp)
+                )
+            }
+        }
+
+    }
+
 }

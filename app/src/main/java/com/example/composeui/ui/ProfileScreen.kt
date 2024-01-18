@@ -14,6 +14,7 @@ import androidx.compose.foundation.layout.height
 import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.layout.size
 import androidx.compose.foundation.layout.width
+import androidx.compose.foundation.lazy.LazyRow
 import androidx.compose.foundation.shape.CircleShape
 import androidx.compose.foundation.shape.RoundedCornerShape
 import androidx.compose.material.Icon
@@ -33,10 +34,12 @@ import androidx.compose.ui.res.painterResource
 import androidx.compose.ui.text.SpanStyle
 import androidx.compose.ui.text.buildAnnotatedString
 import androidx.compose.ui.text.font.FontWeight
+import androidx.compose.ui.text.style.TextAlign
 import androidx.compose.ui.text.style.TextOverflow
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
 import com.example.composeui.R
+import com.example.composeui.data.StoryHighlight
 
 @Composable
 fun ProfileScreen() {
@@ -45,6 +48,17 @@ fun ProfileScreen() {
         ProfileSection()
         Spacer(modifier = Modifier.height(20.dp))
         ButtonSection(modifier = Modifier.fillMaxWidth())
+        Spacer(modifier = Modifier.height(20.dp))
+        HighlightSection(
+            highlights = listOf(
+                StoryHighlight(image = painterResource(id = R.drawable.youtube), text = "Youtube"),
+                StoryHighlight(image = painterResource(id = R.drawable.qa), text = "Q&A"),
+                StoryHighlight(image = painterResource(id = R.drawable.discord), text = "Discord"),
+                StoryHighlight(image = painterResource(id = R.drawable.telegram), text = "Telegram")
+            ),
+            modifier = Modifier
+                .fillMaxWidth()
+        )
     }
 }
 
@@ -254,55 +268,67 @@ fun ButtonSection(
         )
 
         ActionButton(
-            text = "Message",
-            modifier = Modifier
+            text = "Message", modifier = Modifier
                 .defaultMinSize(minWidth = minWidth)
                 .height(height)
         )
         ActionButton(
-            text = "Email",
-            modifier = Modifier
+            text = "Email", modifier = Modifier
                 .defaultMinSize(minWidth = minWidth)
                 .height(height)
         )
         ActionButton(
-            icon = Icons.Default.KeyboardArrowDown,
-            modifier = Modifier
-                .height(height)
+            icon = Icons.Default.KeyboardArrowDown, modifier = Modifier.height(height)
         )
     }
 }
 
 @Composable
 fun ActionButton(
-    modifier: Modifier = Modifier,
-    text: String? = null,
-    icon: ImageVector? = null
+    modifier: Modifier = Modifier, text: String? = null, icon: ImageVector? = null
 ) {
     Row(
         horizontalArrangement = Arrangement.Center,
         verticalAlignment = Alignment.CenterVertically,
         modifier = modifier
             .border(
-                width = 1.dp,
-                color = Color.LightGray,
-                shape = RoundedCornerShape(5.dp)
+                width = 1.dp, color = Color.LightGray, shape = RoundedCornerShape(5.dp)
             )
             .padding(6.dp)
     ) {
         if (text != null) {
             Text(
-                text = text,
-                fontWeight = FontWeight.SemiBold,
-                fontSize = 14.sp
+                text = text, fontWeight = FontWeight.SemiBold, fontSize = 14.sp
             )
         }
         if (icon != null) {
             Icon(
-                imageVector = icon,
-                contentDescription = null,
-                tint = Color.Black
+                imageVector = icon, contentDescription = null, tint = Color.Black
             )
+        }
+    }
+}
+
+@Composable
+fun HighlightSection(
+    highlights: List<StoryHighlight>, modifier: Modifier = Modifier
+) {
+    LazyRow(modifier = modifier) {
+        items(highlights.size) {
+            Column(
+                horizontalAlignment = Alignment.CenterHorizontally,
+                verticalArrangement = Arrangement.Center,
+                modifier = Modifier.padding(15.dp)
+            ) {
+                RoundImage(
+                    image = highlights[it].image, modifier = Modifier.size(70.dp)
+                )
+                Text(
+                    text = highlights[it].text,
+                    overflow = TextOverflow.Ellipsis,
+                    textAlign = TextAlign.Center
+                )
+            }
         }
     }
 }

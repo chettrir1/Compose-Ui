@@ -15,6 +15,8 @@ import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.layout.size
 import androidx.compose.foundation.layout.width
 import androidx.compose.foundation.lazy.LazyRow
+import androidx.compose.foundation.lazy.grid.GridCells
+import androidx.compose.foundation.lazy.grid.LazyVerticalGrid
 import androidx.compose.foundation.shape.CircleShape
 import androidx.compose.foundation.shape.RoundedCornerShape
 import androidx.compose.material.Icon
@@ -32,6 +34,7 @@ import androidx.compose.runtime.setValue
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.draw.clip
+import androidx.compose.ui.draw.scale
 import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.graphics.painter.Painter
 import androidx.compose.ui.graphics.vector.ImageVector
@@ -49,6 +52,9 @@ import com.example.composeui.data.ImageWithText
 
 @Composable
 fun ProfileScreen() {
+    var selectedTabIntext by remember {
+        mutableStateOf(0)
+    }
     Column(modifier = Modifier.fillMaxSize()) {
         TopBar(name = "chettrir1")
         ProfileSection()
@@ -65,6 +71,31 @@ fun ProfileScreen() {
                 .fillMaxWidth()
                 .padding(horizontal = 8.dp)
         )
+        Spacer(modifier = Modifier.height(10.dp))
+        PostTabView(
+            imageWithText = listOf(
+                ImageWithText(image = painterResource(id = R.drawable.ic_grid), text = "Posts"),
+                ImageWithText(image = painterResource(id = R.drawable.ic_reels), text = "Reels"),
+                ImageWithText(image = painterResource(id = R.drawable.ic_igtv), text = "IGTV"),
+                ImageWithText(image = painterResource(id = R.drawable.profile), text = "Profile"),
+
+                )
+        ) {
+            selectedTabIntext = it
+        }
+        when (selectedTabIntext) {
+            0 -> PostSection(
+                posts = listOf(
+                    painterResource(id = R.drawable.kmm),
+                    painterResource(id = R.drawable.intermediate_dev),
+                    painterResource(id = R.drawable.intermediate_dev),
+                    painterResource(id = R.drawable.bad_habits),
+                    painterResource(id = R.drawable.multiple_languages),
+                    painterResource(id = R.drawable.learn_coding_fast)
+                ),
+                modifier = Modifier.fillMaxWidth()
+            )
+        }
     }
 }
 
@@ -377,6 +408,31 @@ fun PostTabView(
             }
         }
 
+    }
+}
+
+@Composable
+fun PostSection(
+    posts: List<Painter>,
+    modifier: Modifier = Modifier
+) {
+    LazyVerticalGrid(
+        columns = GridCells.Fixed(3),
+        modifier = modifier.scale(1.01f)
+    ) {
+        items(posts.size) {
+            Image(
+                painter = posts[it],
+                contentDescription = null,
+                contentScale = ContentScale.Crop,
+                modifier = Modifier
+                    .aspectRatio(1f)
+                    .border(
+                        width = 1.dp,
+                        color = Color.White
+                    )
+            )
+        }
     }
 
 }
